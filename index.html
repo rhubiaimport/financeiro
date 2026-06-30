@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#d96578" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Meu Bebê" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="description" content="Aplicativo local para acompanhar mamadas, leite, fraldas, remédios, consultas e crescimento do bebê." />
+    <title>Meu Bebê</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Acompanhamento diário</p>
+          <h1 id="babyNameTitle">Meu Bebê</h1>
+          <p class="save-status" id="saveStatus">Dados protegidos neste aparelho</p>
+        </div>
+        <div class="top-actions">
+          <button class="icon-action" id="installBtn" type="button" title="Instalar aplicativo" hidden>＋</button>
+          <button class="icon-action" id="quickBackupBtn" type="button" title="Baixar backup">⬇</button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="screen active home-bg" id="homeScreen" data-screen="inicio">
+          <div class="summary-hero">
+            <div>
+              <p class="muted">Hoje</p>
+              <h2 id="babyAge">Configure o perfil</h2>
+            </div>
+            <div class="avatar" id="babyInitial">B</div>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="metric">
+              <span>Peso</span>
+              <strong id="currentWeight">--</strong>
+            </article>
+            <article class="metric">
+              <span>Tamanho</span>
+              <strong id="currentHeight">--</strong>
+            </article>
+            <article class="metric">
+              <span>Próxima mamada</span>
+              <strong id="nextFeeding">--</strong>
+            </article>
+            <article class="metric">
+              <span>Leite válido até</span>
+              <strong id="milkValidity">--</strong>
+            </article>
+            <article class="metric">
+              <span>Próximo remédio</span>
+              <strong id="nextMedicine">--</strong>
+            </article>
+            <article class="metric">
+              <span>Próxima consulta</span>
+              <strong id="nextAppointment">--</strong>
+            </article>
+          </div>
+
+          <div class="today-strip">
+            <div>
+              <span>Cocôs hoje</span>
+              <strong id="poopToday">0</strong>
+            </div>
+            <div>
+              <span>Xixis hoje</span>
+              <strong id="peeToday">0</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen bottle-bg" id="feedingsScreen" data-screen="mamadas">
+          <div class="section-head">
+            <h2>Mamadas</h2>
+            <p>Registre mamadas e calcule automaticamente o próximo horário.</p>
+          </div>
+          <form class="form-grid" id="feedingForm">
+            <label>Horário<input type="datetime-local" id="feedingTime" required /></label>
+            <label>Tipo<select id="feedingType"><option>Peito</option><option>Mamadeira</option><option>Leite ordenhado</option><option>Fórmula</option></select></label>
+            <label>Quantidade (ml)<input type="number" id="feedingAmount" min="0" step="5" placeholder="Opcional" /></label>
+            <label>Próxima em (horas)<input type="number" id="feedingInterval" min="1" max="8" step="0.5" value="3" required /></label>
+            <button class="primary full" type="submit">Salvar mamada</button>
+          </form>
+          <div class="list" id="feedingList"></div>
+        </section>
+
+        <section class="screen milk-bg" id="milkScreen" data-screen="leite">
+          <div class="section-head">
+            <h2>Leite</h2>
+            <p>Controle estoque, preparo e validade.</p>
+          </div>
+          <form class="form-grid" id="milkForm">
+            <label>Descrição<input type="text" id="milkLabel" placeholder="Ex.: Mamadeira da manhã" required /></label>
+            <label>Quantidade (ml)<input type="number" id="milkAmount" min="1" step="5" required /></label>
+            <label>Preparado em<input type="datetime-local" id="milkPrepared" required /></label>
+            <label>Validade (horas)<input type="number" id="milkHours" min="1" max="72" value="2" required /></label>
+            <button class="primary full" type="submit">Salvar leite</button>
+          </form>
+          <div class="list" id="milkList"></div>
+        </section>
+
+        <section class="screen poop-bg" id="poopScreen" data-screen="coco">
+          <div class="section-head">
+            <h2>Cocô</h2>
+            <p>Contador diário com histórico simples.</p>
+          </div>
+          <form class="inline-form" id="poopForm">
+            <select id="poopTexture">
+              <option>Normal</option>
+              <option>Pastoso</option>
+              <option>Líquido</option>
+              <option>Ressecado</option>
+            </select>
+            <button class="primary" type="submit">Registrar cocô</button>
+          </form>
+          <div class="big-counter"><span id="poopCounter">0</span><small>hoje</small></div>
+          <div class="list" id="poopList"></div>
+        </section>
+
+        <section class="screen pee-bg" id="peeScreen" data-screen="xixi">
+          <div class="section-head">
+            <h2>Xixi</h2>
+            <p>Registre trocas e acompanhe a rotina do dia.</p>
+          </div>
+          <form class="inline-form" id="peeForm">
+            <select id="peeVolume">
+              <option>Normal</option>
+              <option>Pouco</option>
+              <option>Muito</option>
+            </select>
+            <button class="primary" type="submit">Registrar xixi</button>
+          </form>
+          <div class="big-counter"><span id="peeCounter">0</span><small>hoje</small></div>
+          <div class="list" id="peeList"></div>
+        </section>
+
+        <section class="screen medicine-bg" id="medicineScreen" data-screen="remedios">
+          <div class="section-head">
+            <h2>Remédios</h2>
+            <p>Horários com contagem regressiva correta.</p>
+          </div>
+          <form class="form-grid" id="medicineForm">
+            <label>Nome<input type="text" id="medicineName" required /></label>
+            <label>Dose<input type="text" id="medicineDose" placeholder="Ex.: 5 gotas" required /></label>
+            <label>Primeira dose<input type="datetime-local" id="medicineStart" required /></label>
+            <label>Intervalo (horas)<input type="number" id="medicineInterval" min="1" max="48" value="8" required /></label>
+            <button class="primary full" type="submit">Salvar remédio</button>
+          </form>
+          <div class="list" id="medicineList"></div>
+        </section>
+
+        <section class="screen doctor-bg" id="doctorScreen" data-screen="medico">
+          <div class="section-head">
+            <h2>Médico</h2>
+            <p>Consultas, vacinas e lembretes importantes.</p>
+          </div>
+          <form class="form-grid" id="appointmentForm">
+            <label>Título<input type="text" id="appointmentTitle" required /></label>
+            <label>Data e hora<input type="datetime-local" id="appointmentTime" required /></label>
+            <label>Local<input type="text" id="appointmentPlace" placeholder="Clínica, hospital ou online" /></label>
+            <label>Notas<input type="text" id="appointmentNotes" placeholder="O que levar ou perguntar" /></label>
+            <button class="primary full" type="submit">Salvar consulta</button>
+          </form>
+          <div class="list" id="appointmentList"></div>
+        </section>
+
+        <section class="screen profile-bg" id="profileScreen" data-screen="perfil">
+          <div class="section-head">
+            <h2>Perfil</h2>
+            <p>Dados editáveis, crescimento, perfis e backup.</p>
+          </div>
+          <form class="form-grid" id="profileForm">
+            <label>Nome do bebê<input type="text" id="profileName" required /></label>
+            <label>Nascimento<input type="date" id="profileBirth" required /></label>
+            <label>Peso atual (kg)<input type="number" id="profileWeight" min="0" step="0.01" /></label>
+            <label>Tamanho atual (cm)<input type="number" id="profileHeight" min="0" step="0.1" /></label>
+            <button class="primary full" type="submit">Salvar perfil</button>
+          </form>
+
+          <form class="form-grid" id="growthForm">
+            <label>Data<input type="date" id="growthDate" required /></label>
+            <label>Peso (kg)<input type="number" id="growthWeight" min="0" step="0.01" required /></label>
+            <label>Tamanho (cm)<input type="number" id="growthHeight" min="0" step="0.1" required /></label>
+            <button class="secondary full" type="submit">Adicionar crescimento</button>
+          </form>
+
+          <div class="chart-panel">
+            <h3>Histórico de crescimento</h3>
+            <canvas id="growthChart" width="640" height="260"></canvas>
+          </div>
+
+          <div class="tools-panel">
+            <select id="profileSelector"></select>
+            <button class="secondary" id="newProfileBtn" type="button">Novo bebê</button>
+            <button class="secondary" id="backupBtn" type="button">Backup</button>
+            <label class="file-button">Restaurar<input type="file" id="restoreInput" accept="application/json" /></label>
+          </div>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Navegação principal">
+        <button class="nav-btn active" data-target="inicio" type="button"><span>⌂</span>Início</button>
+        <button class="nav-btn" data-target="mamadas" type="button"><span>⌁</span>Mamadas</button>
+        <button class="nav-btn" data-target="leite" type="button"><span>◌</span>Leite</button>
+        <button class="nav-btn" data-target="coco" type="button"><span>●</span>Cocô</button>
+        <button class="nav-btn" data-target="xixi" type="button"><span>◍</span>Xixi</button>
+        <button class="nav-btn" data-target="remedios" type="button"><span>✚</span>Remédios</button>
+        <button class="nav-btn" data-target="medico" type="button"><span>□</span>Médico</button>
+        <button class="nav-btn" data-target="perfil" type="button"><span>♡</span>Perfil</button>
+      </nav>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="storage.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

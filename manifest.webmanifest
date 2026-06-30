@@ -1,0 +1,20 @@
+{
+  "name": "Meu Bebê",
+  "short_name": "Meu Bebê",
+  "description": "Acompanhamento local de mamadas, leite, fraldas, remédios, consultas e crescimento.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff8f0",
+  "theme_color": "#d96578",
+  "orientation": "portrait",
+  "categories": ["health", "lifestyle", "productivity"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
